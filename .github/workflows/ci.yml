@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate SKILL.md frontmatter
+        run: |
+          fail=0
+          for f in skills/*/SKILL.md; do
+            dir=$(basename "$(dirname "$f")")
+            head -1 "$f" | grep -q '^---$' || { echo "::error::$f missing frontmatter"; fail=1; }
+            grep -q "^name: $dir\$" "$f" || { echo "::error::$f name must match folder $dir"; fail=1; }
+            grep -q '^description:' "$f" || { echo "::error::$f missing description:"; fail=1; }
+            grep -q '^license:' "$f" || { echo "::error::$f missing license:"; fail=1; }
+          done
+          [ "$fail" = 0 ] && echo "all skills valid"
+          exit $fail
