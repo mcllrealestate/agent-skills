@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate SKILL.md frontmatter
+        run: |
+          fail=0
+          for f in skills/*/SKILL.md; do
+            dir=$(basename "$(dirname "$f")")
+            head -1 "$f" | grep -q '^---$' || { echo "::error::$f missing frontmatter"; fail=1; }
+            grep -q "^name: $dir\$" "$f" || { echo "::error::$f name must match folder $dir"; fail=1; }
+            grep -q '^description:' "$f" || { echo "::error::$f missing description:"; fail=1; }
+            grep -q '^license:' "$f" || { echo "::error::$f missing license:"; fail=1; }
+          done
+          [ "$fail" = 0 ] && echo "all skills valid"
+          exit $fail
+      - name: Validate marketplace and eval metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path(".")
+          skills = {p.name for p in (root / "skills").iterdir() if (p / "SKILL.md").is_file()}
+
+          marketplace = json.loads((root / ".claude-plugin" / "marketplace.json").read_text())
+          version = marketplace["metadata"]["version"]
+          assert re.fullmatch(r"\d+\.\d+\.\d+(-[\w.]+)?", version), version
+          listed = {
+              Path(entry).name
+              for plugin in marketplace["plugins"]
+              for entry in plugin["skills"]
+          }
+          assert listed == skills, {"listed": sorted(listed), "skills": sorted(skills)}
+          for plugin in marketplace["plugins"]:
+              assert plugin["name"].endswith("-skills"), plugin["name"]
+              assert 0 < len(plugin["description"]) <= 125, plugin["name"]
+              for entry in plugin["skills"]:
+                  assert entry.startswith("./skills/"), entry
+                  assert (root / entry).is_dir(), entry
+
+          for skill in skills:
+              evals = root / "skills" / skill / "evals" / "evals.json"
+              assert evals.is_file(), f"{skill} missing evals/evals.json"
+              data = json.loads(evals.read_text())
+              assert data["skill_name"] == skill, skill
+              assert data["evals"], f"{skill} has no evals"
+              for item in data["evals"]:
+                  assert item["prompt"].strip(), item
+                  assert item["expected_output"].strip(), item
+                  assert item.get("expectations"), item
+
+          print("marketplace and eval metadata valid")
+          PY

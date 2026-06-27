@@ -1,0 +1,22 @@
+{
+  "name": "mcll-agent-skills",
+  "owner": {
+    "name": "mcllrealestate",
+    "email": "enquire@mcllrealestate.com"
+  },
+  "metadata": {
+    "description": "AI agent skills for MCLL Real Estate published Thai property data",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "real-estate-skills",
+      "description": "Read-only MCLL property search, listing detail, Code Mode comparisons, and Markdown pages",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/mcll-real-estate"
+      ]
+    }
+  ]
+}
