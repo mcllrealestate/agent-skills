@@ -39,26 +39,25 @@ Two tools:
   `slug` (from a search result), `locale`. Returns price, size, features, coordinates,
   and a Markdown `description`.
 
-If your platform supports Cloudflare-style "code mode", point it at the endpoint and it
-will convert these tools into a typed API automatically (the JSON Schemas above carry the
-doc comments) — no special setup on MCLL's side.
-
 ## 2. REST API (no MCP client needed)
 
 OpenAPI: `https://mcllrealestate.com/api/openapi.json`
 
 - **Search** — `GET /api/listings?type=sale|rent&locale=en` plus optional filters. Note
   these filters take **ids** (UUIDs), not names: `city`, `area`, `propertyType`,
-  `bedrooms`, `priceMin`, `priceMax`, `sort`, `page`. Returns `{ items, total }`. (For
-  name-based filtering — "condos in Phuket" — use the MCP `search_listings` tool, which
-  resolves names to ids for you.)
+  `bedrooms`, `bathrooms`, `priceMin`, `priceMax`, `sizeMin`, `sizeMax`, `furnished`,
+  `features`, `sort`, `page`. Returns `{ total, page, results }`, where each result has
+  the same safe public projection as MCP search: absolute `url`, public image URL, price
+  fields, city/area names, and no admin-only fields. (For name-based filtering —
+  "condos in Phuket" — use the MCP `search_listings` tool, which resolves names to ids
+  for you.)
 - **Detail** — `GET /api/listings/{type}/{slug}?locale=en` → one listing as JSON, with a
   Markdown `description`. `type` is `sale` or `rent`; `slug` comes from a listing URL's
   last path segment.
 
 ```bash
 # Detail of a known listing (slug from its public URL):
-curl -s "https://mcllrealestate.com/api/listings/sale/kamala-condo-5?locale=en"
+curl -s "https://mcllrealestate.com/api/listings/sale/kamala-cliff-villa?locale=en"
 
 # Search (sale listings, page 1):
 curl -s "https://mcllrealestate.com/api/listings?type=sale&locale=en"
@@ -74,7 +73,7 @@ sitemap.
 
 ```bash
 curl -s -H "Accept: text/markdown" \
-  "https://mcllrealestate.com/en/buy/condo/phuket/kamala/kamala-condo-5"
+  "https://mcllrealestate.com/en/buy/villa/phuket/kamala/kamala-cliff-villa"
 ```
 
 Index and static pages have no Markdown rendition and return HTML — use the search API for

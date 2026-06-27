@@ -71,7 +71,7 @@ Published [MCLL](https://mcllrealestate.com) listings, residences for sale and r
 ```bash
 # One listing, as Markdown:
 curl -s -H "Accept: text/markdown" \
-  https://mcllrealestate.com/en/buy/condo/phuket/kamala/kamala-condo-5
+  https://mcllrealestate.com/en/buy/villa/phuket/kamala/kamala-cliff-villa
 ```
 
 ### Areas, news, developments
