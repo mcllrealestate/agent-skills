@@ -1,0 +1,35 @@
+{
+  "skill_name": "mcll-real-estate",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Find current MCLL sale listings, pick the first two priced residences, compute THB per square metre, and link each public listing.",
+      "expected_output": "Uses published MCLL listing data, returns listing titles, URLs, THB prices, areas in square metres, and computed THB per square metre.",
+      "files": [],
+      "expectations": [
+        "Output cites public MCLL URLs for each selected listing.",
+        "Output computes price per square metre only when both priceThb and areaSqm are present."
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Fetch Kamala Cliff Villa and explain its public price status without inventing a price.",
+      "expected_output": "Fetches the listing detail and says Price upon enquiry because priceOnRequest is true or priceThb is null.",
+      "files": [],
+      "expectations": [
+        "Output uses Price upon enquiry for Kamala Cliff Villa.",
+        "Output does not invent a numeric price when priceThb is null."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Get a low-token Markdown view of Kamala Cliff Villa and summarise bedrooms, bathrooms, size, features, and public link.",
+      "expected_output": "Uses Markdown content negotiation on the public listing URL and summarises the Markdown facts with the source link.",
+      "files": [],
+      "expectations": [
+        "Output uses the Markdown rendition rather than parsing HTML.",
+        "Output includes bedrooms, bathrooms, size, at least one feature, and the public listing link."
+      ]
+    }
+  ]
+}
