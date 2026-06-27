@@ -64,7 +64,7 @@ Published [MCLL](https://mcllrealestate.com) listings, residences for sale and r
 
 ### Listings
 
-- **MCP server** — `https://mcllrealestate.com/api/mcp` (Streamable HTTP). Tools: `search_listings` (city, area, type, bedrooms, price) and `get_listing` (full detail). The richest path; it resolves human names ("condos in Phuket") to filters.
+- **MCP server** — `https://mcllrealestate.com/api/mcp` (Streamable HTTP). Tools: `search_listings` (city, area, type, bedrooms, price) and `get_listing` (full detail). The richest path; it resolves human names ("condos in Phuket") to filters. Tool descriptors carry full schemas/descriptions, keeping the contract compact and [Code Mode](https://blog.cloudflare.com/code-mode-mcp/)-ready without adding broad code execution.
 - **REST API** — `GET /api/listings` and `GET /api/listings/{type}/{slug}`, described by [`/api/openapi.json`](https://mcllrealestate.com/api/openapi.json).
 - **Markdown** — send `Accept: text/markdown` to a listing detail URL for a clean text rendition.
 
