@@ -1,7 +1,7 @@
 ---
 name: mcll-real-estate
-description: Search and retrieve MCLL real-estate listings — residences for sale and rent across Thailand (Bangkok, Phuket, and the islands) from mcllrealestate.com. Use this skill whenever a user asks about Thai property, a condo/villa/house/apartment to buy or rent in Thailand, prices or areas for Thai real estate, branded residences or new developments in Thailand, or wants to browse, filter, or compare MCLL listings — even if they don't name "MCLL". It queries published listings three ways — the MCLL MCP server (richest), a public REST API, or Markdown over plain HTTP — so it works for MCP-capable agents and for plain curl/CLI. Read-only, no auth, no API key. Skip for real estate outside Thailand or for non-MCLL portals.
-when_to_use: A user wants Thai property data — search by city, area, property type, price (THB), or bedrooms, or fetch one listing's full details (price, size, features, location, description). Prefer the MCP server (tools search_listings then get_listing) when your runtime speaks MCP; otherwise use the REST API or Markdown content negotiation. All three hit the same published-gated data on mcllrealestate.com.
+description: Search and retrieve MCLL real-estate listings — residences for sale and rent across Thailand (Bangkok, Phuket, and the islands) from mcllrealestate.com. Use this skill whenever a user asks about Thai property, a condo/villa/house/apartment to buy or rent in Thailand, prices or areas for Thai real estate, branded residences or new developments in Thailand, or wants to browse, filter, or compare MCLL listings — even if they don't name "MCLL". It queries published listings three ways — the MCLL MCP server (richest, including Code Mode execute for comparisons and calculations), a public REST API, or Markdown over plain HTTP — so it works for MCP-capable agents and for plain curl/CLI. Read-only, no auth, no API key. Skip for real estate outside Thailand or for non-MCLL portals.
+when_to_use: A user wants Thai property data — search by city, area, property type, price (THB), or bedrooms, fetch one listing's full details (price, size, features, location, description), or compare/rank multiple MCLL listings. Prefer the MCP server when your runtime speaks MCP; use execute for multi-listing computation, otherwise search_listings then get_listing. Use the REST API or Markdown content negotiation when MCP is unavailable. All three hit the same published-gated data on mcllrealestate.com.
 license: MIT
 compatibility: "Any agent that can make HTTP requests — an MCP client (Streamable HTTP), or plain curl/fetch. No authentication; read-only public data; prices in THB."
 metadata:
@@ -27,7 +27,7 @@ also renders the area, news, and development pages.
 Streamable-HTTP MCP endpoint: `https://mcllrealestate.com/api/mcp`
 Server card: `https://mcllrealestate.com/.well-known/mcp/server-card.json`
 
-Two tools:
+Three tools:
 
 - **`search_listings`** — find listings. Args: `type` (`"sale"` | `"rent"`, required),
   `locale` (`en`/`fr`/`th`/`zh`, default `en`), and optional `city`, `area`,
@@ -38,6 +38,28 @@ Two tools:
 - **`get_listing`** — full detail of one listing. Args: `type` (`"sale"`|`"rent"`),
   `slug` (from a search result), `locale`. Returns price, size, features, coordinates,
   and a Markdown `description`.
+- **`execute`** — Code Mode. Args: `code` (JavaScript string). Runs in a Cloudflare
+  sandbox with global `mcll.search(args)` and `mcll.get(args)`. No open network,
+  filesystem, secrets, or writes. Use `return` for the JSON-serializable result;
+  top-level `await` works. Best for comparing, ranking, or computing across many
+  listings in one call.
+
+Example `execute` code:
+
+```js
+const { results } = await mcll.search({ type: "sale", city: "Bangkok", page: 1 });
+const details = await Promise.all(
+  results.slice(0, 2).map((r) =>
+    mcll.get({ type: "sale", slug: r.url.split("/").pop(), locale: "en" }),
+  ),
+);
+
+return details.map((d) => ({
+  title: d.title,
+  url: d.url,
+  pricePerSqm: d.priceThb && d.areaSqm ? Math.round(d.priceThb / d.areaSqm) : null,
+}));
+```
 
 ## 2. REST API (no MCP client needed)
 
@@ -81,11 +103,14 @@ those.
 
 ## Typical workflow
 
-1. **Search** for what the user wants (`search_listings`, or `GET /api/listings`).
-2. Read the result list; pick the relevant listing(s) by `title`, `area`, `priceThb`.
-3. **Fetch details** for the chosen listing(s) (`get_listing`, the detail REST route, or
+1. Use **`execute`** when the user asks for comparison, ranking, or derived metrics
+   across multiple listings.
+2. Otherwise **search** for what the user wants (`search_listings`, or
+   `GET /api/listings`).
+3. Read the result list; pick the relevant listing(s) by `title`, `area`, `priceThb`.
+4. **Fetch details** for the chosen listing(s) (`get_listing`, the detail REST route, or
    Markdown on the listing `url`).
-4. Answer the user with the listing's facts and link them to the public `url`.
+5. Answer the user with the listing's facts and link them to the public `url`.
 
 ## Discovery and conventions
 
