@@ -1,7 +1,6 @@
 ---
 name: mcll-real-estate
-description: Search and retrieve published MCLL real-estate listings from mcllrealestate.com. Use for Thai property searches, residences for sale or rent, prices, areas, branded residences, new developments, or comparisons across MCLL listings. Prefer the MCLL MCP server; its execute tool is Code Mode JavaScript for calculations and comparisons over published listings. REST and Markdown fallbacks work without MCP. Read-only, no auth, no API key. Skip real estate outside Thailand and non-MCLL portals.
-when_to_use: Use when a user wants Thai property data to search by city, area, property type, price in THB, or bedrooms; fetch one listing's price, size, features, location, or description; compare or rank multiple MCLL listings. Prefer MCP when available. Use execute for multi-listing computation, otherwise search_listings then get_listing. Use REST or Markdown when MCP is unavailable. All paths return the same published public data.
+description: Search and compare published MCLL properties for sale or rent in Thailand, or read MCLL area, news, and development pages.
 license: MIT
 compatibility: "Any agent that can make HTTP requests: an MCP client with Streamable HTTP, or plain curl/fetch. No authentication; read-only public data; prices in THB."
 metadata:
@@ -55,7 +54,7 @@ const details = await Promise.all(
   ),
 );
 
-return details.map((d) => ({
+return details.filter((d) => d !== null).map((d) => ({
   title: d.title,
   url: d.url,
   pricePerSqm: d.priceThb && d.areaSqm ? Math.round(d.priceThb / d.areaSqm) : null,
@@ -73,7 +72,7 @@ OpenAPI: `https://mcllrealestate.com/api/openapi.json`
   the same safe public projection as MCP search: absolute `url`, public image URL, price
   fields, city/area names, and no admin-only fields. For name-based filtering such as
   "condos in Phuket", use the MCP `search_listings` tool, which resolves names to ids
-  for you.)
+  for you.
 - **Detail**: `GET /api/listings/{type}/{slug}?locale=en` returns one listing as JSON, with a
   Markdown `description`. `type` is `sale` or `rent`; `slug` comes from a listing URL's
   last path segment.
@@ -111,6 +110,10 @@ those.
 4. Fetch details for the chosen listing(s) (`get_listing`, the detail REST route, or
    Markdown on the listing `url`).
 5. Answer the user with the listing's facts and link them to the public `url`.
+
+An empty search or missing detail means no matching public data is available. Say so;
+do not infer that a missing listing has a price upon enquiry. `mcll.get` returns `null`
+for a missing slug, so skip it when comparing results.
 
 ## Discovery and conventions
 
