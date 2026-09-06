@@ -9,7 +9,7 @@ on:
 jobs:
   scan:
     name: scan
-    uses: cisco-ai-defense/skill-scanner/.github/workflows/scan-skills.yml@ff708ea00fd401640112c138711c5c36ff4992a0 # 2.0.11
+    uses: cisco-ai-defense/skill-scanner/.github/workflows/scan-skills.yml@ec7c7f09c38c30af00e145e113b69fae96cbeb1a # 2.0.13
     permissions:
       contents: read
       security-events: write
