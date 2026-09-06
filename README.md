@@ -29,7 +29,7 @@ npx skills add mcllrealestate/agent-skills
 npx skills add mcllrealestate/agent-skills --skill mcll-real-estate
 ```
 
-Or read [`skills/mcll-real-estate/SKILL.md`](skills/mcll-real-estate/SKILL.md) directly. The skill is self-contained and optimised for Claude Code; it degrades gracefully on any agent that implements the [Agent Skills](https://agentskills.io) standard.
+Or read [`skills/mcll-real-estate/SKILL.md`](skills/mcll-real-estate/SKILL.md) directly. The skill is self-contained and works with agents that implement the [Agent Skills](https://agentskills.io) standard and support HTTP requests or an MCP client.
 
 The Claude Code marketplace manifest lives at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) and exposes the skill under `real-estate-skills`.
 
