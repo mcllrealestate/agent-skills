@@ -49,11 +49,8 @@ Published [MCLL](https://mcllrealestate.com) listings, residences for sale and r
 - **REST API**: `GET /api/listings` and `GET /api/listings/{type}/{slug}`, described by [`/api/openapi.json`](https://mcllrealestate.com/api/openapi.json).
 - **Markdown**: send `Accept: text/markdown` to a listing detail URL for a clean text rendition.
 
-```bash
-# One listing, as Markdown:
-curl -s -H "Accept: text/markdown" \
-  https://mcllrealestate.com/en/buy/villa/phuket/kamala/kamala-cliff-villa
-```
+Use a current URL returned by search or listed in the [sitemap](https://mcllrealestate.com/sitemap.xml)
+when requesting listing Markdown; listings can be unpublished.
 
 ### Areas, news, developments
 
