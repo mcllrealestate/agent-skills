@@ -7,7 +7,7 @@
 
 **AI agent skills for [MCLL Real Estate](https://mcllrealestate.com): published Thai residences for sale and rent**
 
-Frontmatter-validated and security-scanned on every push. Read-only, no API key.
+Frontmatter-validated and security-scanned on pull requests and pushes to main. Read-only, no API key.
 
 [![license](https://img.shields.io/badge/license-MIT-1C1A16?style=flat-square)](LICENSE.md)
 [![latest](https://img.shields.io/github/v/release/mcllrealestate/agent-skills?style=flat-square&label=latest&color=1C1A16)](https://github.com/mcllrealestate/agent-skills/releases)
@@ -33,6 +33,14 @@ Or read [`skills/mcll-real-estate/SKILL.md`](skills/mcll-real-estate/SKILL.md) d
 
 The Claude Code marketplace manifest lives at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) and exposes the skill under `real-estate-skills`.
 
+To make the MCP tools available in Codex, register the server:
+
+```bash
+codex mcp add mcll --url https://mcllrealestate.com/api/mcp
+```
+
+Reload the MCP connection if needed, then check that `mcll` is enabled in MCP settings.
+
 ## Requirements
 
 - An agent that can make HTTP requests: an MCP client (Streamable HTTP), or plain `curl` / `fetch`
@@ -49,11 +57,8 @@ Published [MCLL](https://mcllrealestate.com) listings, residences for sale and r
 - **REST API**: `GET /api/listings` and `GET /api/listings/{type}/{slug}`, described by [`/api/openapi.json`](https://mcllrealestate.com/api/openapi.json).
 - **Markdown**: send `Accept: text/markdown` to a listing detail URL for a clean text rendition.
 
-```bash
-# One listing, as Markdown:
-curl -s -H "Accept: text/markdown" \
-  https://mcllrealestate.com/en/buy/villa/phuket/kamala/kamala-cliff-villa
-```
+Use a current URL returned by search or listed in the [sitemap](https://mcllrealestate.com/sitemap.xml)
+when requesting listing Markdown; listings can be unpublished.
 
 ### Areas, news, developments
 

@@ -3,33 +3,37 @@
   "evals": [
     {
       "id": 0,
-      "prompt": "Find current MCLL sale listings, pick the first two priced residences, compute THB per square metre, and link each public listing.",
-      "expected_output": "Uses current published MCLL data to compare up to two priced residences. Reports when fewer than two suitable listings are available, including an empty result.",
+      "prompt": "Find up to three MCLL apartments to rent in Chidlom, Bangkok, with at least two bedrooms and a monthly budget of 100,000 THB. Give the relevant options, their floor area, price and public link. Reply in French.",
+      "expected_output": "Returns current budget matches and, when these are insufficient, separately labelled unpriced alternatives with the same search criteria. Reports fewer than three options when necessary.",
       "files": [],
       "expectations": [
-        "Output cites public MCLL URLs for each selected listing.",
-        "Output computes price per square metre only when priceThb is public and areaSqm is positive.",
-        "Output reports insufficient or empty results without inventing listings or figures."
+        "Each option is a Bangkok/Chidlom rental with at least two bedrooms, supported by returned data and a public MCLL URL.",
+        "Confirmed budget matches have a public monthly price no greater than 100,000 THB.",
+        "When budget matches are insufficient, the agent checks unpriced alternatives without relaxing the other criteria and marks their budget as unconfirmed.",
+        "Output reports insufficient or empty results without inventing listings or prices, and does not present demonstration listings as real offers."
       ]
     },
     {
       "id": 1,
-      "prompt": "Fetch Kamala Cliff Villa and explain its public price status without inventing a price.",
-      "expected_output": "Fetches the current public listing detail. Reports its returned price, says Price upon enquiry only when returned data indicates it, or explains that no public detail is available.",
+      "prompt": "Compare all MCLL properties for sale in Bangkok with a public price up to 30 million THB. Rank them by price per square metre, lowest first, showing each price, floor area, calculation and public link. Reply in French.",
+      "expected_output": "Uses Code Mode to find all matching public listings and calculate comparable prices per square metre from current data.",
       "files": [],
       "expectations": [
-        "Output derives price status only from returned public listing data.",
-        "Output does not invent a numeric price when priceThb is null, and does not treat a missing listing as Price upon enquiry."
+        "The agent follows pagination until all matching results have been considered.",
+        "Ranked listings are Bangkok sales within budget with positive public prices and floor areas; unpriced listings are excluded from the calculation.",
+        "Calculations and ascending order agree with returned data, and every listing has its public MCLL URL.",
+        "Output distinguishes an empty result from a failed request, invents no missing facts and preserves material listing qualifiers."
       ]
     },
     {
       "id": 2,
-      "prompt": "Get a low-token Markdown view of Kamala Cliff Villa and summarise bedrooms, bathrooms, size, features, and public link.",
-      "expected_output": "Requests Markdown on the public listing URL and summarises available facts with the source link. If the listing is unavailable, reports that instead of supplying property details.",
+      "prompt": "Without MCP, find a currently published MCLL property for sale in Bangkok, read its Markdown page, and summarise its bedrooms, bathrooms, floor area and public link. Reply in French.",
+      "expected_output": "Discovers a current public listing URL, requests Markdown and summarises only returned facts. Reports unavailable data when necessary.",
       "files": [],
       "expectations": [
-        "Output requests Markdown content negotiation and recognises an unavailable response.",
-        "Output includes only property facts supported by the response, with the public listing link when available."
+        "The agent discovers the listing URL from current public data without using MCP or assuming a fixed listing exists.",
+        "The page request uses Accept: text/markdown and recognises an unavailable response.",
+        "Output includes only facts supported by the response and links the public listing when available."
       ]
     }
   ]
