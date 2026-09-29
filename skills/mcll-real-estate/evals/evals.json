@@ -10,7 +10,7 @@
         "Each option is a Bangkok/Chidlom rental with at least two bedrooms, supported by returned data and a public MCLL URL.",
         "Confirmed budget matches have a public monthly price no greater than 100,000 THB.",
         "When budget matches are insufficient, the agent checks unpriced alternatives without relaxing the other criteria and marks their budget as unconfirmed.",
-        "Output reports insufficient or empty results without inventing listings or prices."
+        "Output reports insufficient or empty results without inventing listings or prices, and does not present demonstration listings as real offers."
       ]
     },
     {
@@ -22,7 +22,7 @@
         "The agent follows pagination until all matching results have been considered.",
         "Ranked listings are Bangkok sales within budget with positive public prices and floor areas; unpriced listings are excluded from the calculation.",
         "Calculations and ascending order agree with returned data, and every listing has its public MCLL URL.",
-        "Output distinguishes an empty result from a failed request and invents no missing facts."
+        "Output distinguishes an empty result from a failed request, invents no missing facts and preserves material listing qualifiers."
       ]
     },
     {

@@ -34,6 +34,7 @@ arguments; discovery is also available in the [server card](https://mcllrealesta
 When `priceOnRequest` is true or `priceThb` is null, say "Price upon enquiry" and
 never infer a numeric price. Calculate price per square metre only for public prices
 with positive `priceThb` and `areaSqm`.
+Treat listings labelled as demonstrations as examples, not available properties.
 
 ## Compare with Code Mode
 
@@ -57,7 +58,7 @@ return results
 
 Use the [OpenAPI contract](https://mcllrealestate.com/api/openapi.json) for REST search
 and detail. REST location and property-type filters take UUIDs rather than MCP names.
-For listing, area, news or development pages, find current URLs in the
-[sitemap](https://mcllrealestate.com/sitemap.xml) and request `Accept: text/markdown`.
+For listing, area, news or development pages, use a URL returned by search or found
+in the [sitemap](https://mcllrealestate.com/sitemap.xml) and request `Accept: text/markdown`.
 The home page returns an overview; index and static pages remain HTML. Areas, news
 and developments have no MCP tool or REST endpoint.
