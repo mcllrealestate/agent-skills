@@ -71,7 +71,7 @@ Discovery: [sitemap](https://mcllrealestate.com/sitemap.xml) · [API catalog](ht
 - Follows the [agentskills.io](https://agentskills.io) open standard.
 - CI validates SKILL.md frontmatter, marketplace parity, and eval metadata.
 - [`cisco-ai-defense/skill-scanner`](https://github.com/cisco-ai-defense/skill-scanner) scans pull requests and pushes with policy `balanced`, fail-on `critical`.
-- The site advertises the skill through [`/.well-known/agent-skills/index.json`](https://mcllrealestate.com/.well-known/agent-skills/index.json). Updating `SKILL.md` requires updating that published digest before release.
+- The site advertises the skill through [`/.well-known/agent-skills/index.json`](https://mcllrealestate.com/.well-known/agent-skills/index.json). Maintainers synchronise and verify the pinned artifact using the [release procedure](.agents/rules/release.md).
 
 ## License
 
