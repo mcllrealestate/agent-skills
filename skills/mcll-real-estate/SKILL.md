@@ -59,6 +59,7 @@ return results
 Use the [OpenAPI contract](https://mcllrealestate.com/api/openapi.json) for REST search
 and detail. REST location and property-type filters take UUIDs rather than MCP names.
 For listing, area, news or development pages, use a URL returned by search or found
-in the [sitemap](https://mcllrealestate.com/sitemap.xml) and request `Accept: text/markdown`.
-The home page returns an overview; index and static pages remain HTML. Areas, news
+in the [sitemap](https://mcllrealestate.com/sitemap.xml). Request `Accept: text/markdown`
+or append `.md` to the URL path. The home page returns an overview. With the header,
+index and static pages remain HTML; unsupported `.md` URLs return 404. Areas, news
 and developments have no MCP tool or REST endpoint.
