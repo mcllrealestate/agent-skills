@@ -32,7 +32,7 @@
       "files": [],
       "expectations": [
         "The agent discovers the listing URL from current public data without using MCP or assuming a fixed listing exists.",
-        "The page request uses Accept: text/markdown and recognises an unavailable response.",
+        "The page request uses Accept: text/markdown or a .md URL-path suffix and recognises an unavailable response.",
         "Output includes only facts supported by the response and links the public listing when available."
       ]
     }
