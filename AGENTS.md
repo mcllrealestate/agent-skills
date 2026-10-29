@@ -5,7 +5,7 @@ Installable skills for [MCLL Real Estate](https://mcllrealestate.com). The repo 
 ## Project constraints
 
 - Use the official `skill-creator` skill for every skill edit.
-- Keep the repo small: `README.md` for users, `AGENTS.md` for maintainer rules, `.agents/rules/` for durable release rules, `CLAUDE.md` as the pointer.
+- Keep the repo small: `README.md` for users, `AGENTS.md` for maintainer rules, `.agents/rules/` for durable release rules.
 - Follow the [agentskills.io](https://agentskills.io) layout. `skills/{name}/SKILL.md` must have `name: {name}`.
 - Ground claims in runtime truth: server card, OpenAPI, sitemap, and `llms-full.txt`.
 - MCLL data access is public, read-only, unauthenticated, and priced in THB.
