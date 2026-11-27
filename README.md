@@ -55,16 +55,16 @@ Published [MCLL](https://mcllrealestate.com) listings, residences for sale and r
 - **MCP server**: `https://mcllrealestate.com/api/mcp` (Streamable HTTP). Tools: `search_listings`, `get_listing`, and `execute`.
 - **[Code Mode](https://developers.cloudflare.com/agents/model-context-protocol/codemode/)**: `execute` runs JavaScript in a Cloudflare sandbox with `mcll.search(args)` and `mcll.get(args)`. Use it to compare, rank, or compute across listings in one call.
 - **REST API**: `GET /api/listings` and `GET /api/listings/{type}/{slug}`, described by [`/api/openapi.json`](https://mcllrealestate.com/api/openapi.json).
-- **Markdown**: send `Accept: text/markdown` to a listing detail URL for a clean text rendition.
+- **Markdown**: send `Accept: text/markdown` to a listing detail URL, or append `.md` to its path, for a clean text rendition.
 
 Use a current URL returned by search or listed in the [sitemap](https://mcllrealestate.com/sitemap.xml)
 when requesting listing Markdown; listings can be unpublished.
 
 ### Areas, news, developments
 
-No MCP tool or REST endpoint covers these. Send `Accept: text/markdown` to an individual area, news, or development page and the site returns Markdown in place of HTML. Find the URLs through the [sitemap](https://mcllrealestate.com/sitemap.xml); index and static pages stay HTML.
+No MCP tool or REST endpoint covers these. Send `Accept: text/markdown` to an individual area, news or development page, or append `.md` to its URL path. Find current URLs through the [sitemap](https://mcllrealestate.com/sitemap.xml). With the header, index and static pages stay HTML; unsupported `.md` URLs return 404.
 
-Discovery: [sitemap](https://mcllrealestate.com/sitemap.xml) · [API catalog](https://mcllrealestate.com/.well-known/api-catalog) · [MCP server card](https://mcllrealestate.com/.well-known/mcp/server-card.json) · [site guide](https://mcllrealestate.com/llms-full.txt).
+Discovery: [agent catalogue](https://mcllrealestate.com/.well-known/ard.json) · [sitemap](https://mcllrealestate.com/sitemap.xml) · [API catalog](https://mcllrealestate.com/.well-known/api-catalog) · [MCP server card](https://mcllrealestate.com/.well-known/mcp/server-card.json) · [site guide](https://mcllrealestate.com/llms-full.txt).
 
 ## Quality
 
